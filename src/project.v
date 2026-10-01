@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Your Name
+ * Copyright (c) 2026 The PWM dimmer team
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -16,12 +16,20 @@ module tt_um_ic102_dimmer (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  assign uio_out = 0;
-  assign uio_oe  = 0;
+  // ui_in is the brightness, 0 (off) to 255, and uo_out[7] drives the LED.
+
+  wire       tick;
+  wire       led;
+  wire [7:0] duty = ui_in;
+
+  prescaler u_prescaler (.clk(clk), .rst_n(rst_n), .tick(tick));
+  pwm       u_pwm       (.clk(clk), .rst_n(rst_n), .step(tick), .duty(duty), .out(led));
+
+  assign uo_out  = {led, 7'b0};
+  assign uio_out = 8'd0;
+  assign uio_oe  = 8'd0;
 
   // List all unused inputs to prevent warnings
-  wire _unused = &{ena, clk, rst_n, 1'b0};
+  wire _unused = &{ena, uio_in, 1'b0};
 
 endmodule
