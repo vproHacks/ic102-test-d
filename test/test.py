@@ -1,40 +1,55 @@
-# SPDX-FileCopyrightText: © 2024 Tiny Tapeout
+# SPDX-FileCopyrightText: 2026 The PWM dimmer team
 # SPDX-License-Identifier: Apache-2.0
 
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import ClockCycles
+from cocotb.triggers import ClockCycles, FallingEdge
+
+DIV = 4               # the prescaler divides the clock by 4
+PERIOD = 256 * DIV    # clock cycles in one PWM period
+
+
+async def start(dut, duty=0, mode=0):
+    """Start a 100 kHz clock and reset the design, with ui_in = duty and uio_in = mode."""
+    cocotb.start_soon(Clock(dut.clk, 10, unit="us").start())
+    dut.ena.value = 1
+    dut.ui_in.value = duty
+    dut.uio_in.value = mode
+    dut.rst_n.value = 0
+    await ClockCycles(dut.clk, 5)
+    dut.rst_n.value = 1
+    await FallingEdge(dut.clk)
+
+
+def led(dut):
+    return (int(dut.uo_out.value) >> 7) & 1
+
+
+async def on_cycles(dut, cycles):
+    """Count the cycles the LED is on, sampling on each falling edge."""
+    n = 0
+    for _ in range(cycles):
+        n += led(dut)
+        await FallingEdge(dut.clk)
+    return n
 
 
 @cocotb.test()
-async def test_project(dut):
-    dut._log.info("Start")
+async def test_duty_0_is_off(dut):
+    await start(dut, duty=0)
+    n = await on_cycles(dut, 2 * PERIOD)
+    assert n == 0, f"with duty 0 the LED was on for {n} of {2 * PERIOD} cycles, expected 0"
 
-    # Set the clock period to 10 us (100 KHz)
-    clock = Clock(dut.clk, 10, unit="us")
-    cocotb.start_soon(clock.start())
 
-    # Reset
-    dut._log.info("Reset")
-    dut.ena.value = 1
-    dut.ui_in.value = 0
-    dut.uio_in.value = 0
-    dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
-    dut.rst_n.value = 1
+@cocotb.test()
+async def test_duty_64_is_a_quarter(dut):
+    await start(dut, duty=64)
+    n = await on_cycles(dut, PERIOD)
+    assert n == 64 * DIV, f"with duty 64 the LED was on for {n} of {PERIOD} cycles, expected {64 * DIV}"
 
-    dut._log.info("Test project behavior")
 
-    # Set the input values you want to test
-    dut.ui_in.value = 20
-    dut.uio_in.value = 30
-
-    # Wait for one clock cycle to see the output values
-    await ClockCycles(dut.clk, 1)
-
-    # The following assersion is just an example of how to check the output values.
-    # Change it to match the actual expected output of your module:
-    assert dut.uo_out.value == 50
-
-    # Keep testing the module by changing the input values, waiting for
-    # one or more clock cycles, and asserting the expected output values.
+@cocotb.test()
+async def test_duty_255(dut):
+    await start(dut, duty=255)
+    n = await on_cycles(dut, PERIOD)
+    assert n == 255 * DIV, f"with duty 255 the LED was on for {n} of {PERIOD} cycles, expected {255 * DIV}"
