@@ -17,15 +17,18 @@ module tt_um_ic102_dimmer (
 );
 
   // ui_in is the brightness, 0 (off) to 255, and uo_out[7] drives the LED.
+  // uo_out[6:0] show the brightness's top hex digit on a seven-segment display.
 
   wire       tick;
   wire       led;
+  wire [6:0] segments;
   wire [7:0] duty = ui_in;
 
   prescaler u_prescaler (.clk(clk), .rst_n(rst_n), .tick(tick));
   pwm       u_pwm       (.clk(clk), .rst_n(rst_n), .step(tick), .duty(duty), .out(led));
+  seg7      u_seg7      (.digit(duty[7:4]), .segments(segments));
 
-  assign uo_out  = {led, 7'b0};
+  assign uo_out  = {led, segments};
   assign uio_out = 8'd0;
   assign uio_oe  = 8'd0;
 
