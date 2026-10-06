@@ -8,6 +8,10 @@ from cocotb.triggers import ClockCycles, FallingEdge
 DIV = 4               # the prescaler divides the clock by 4
 PERIOD = 256 * DIV    # clock cycles in one PWM period
 
+# segments[6:0] = {g, f, e, d, c, b, a} for the digits 0 to F
+DIGITS = [0b0111111, 0b0000110, 0b1011011, 0b1001111, 0b1100110, 0b1101101, 0b1111101, 0b0000111,
+          0b1111111, 0b1101111, 0b1110111, 0b1111100, 0b0111001, 0b1011110, 0b1111001, 0b1110001]
+
 
 async def start(dut, duty=0, mode=0):
     """Start a 100 kHz clock and reset the design, with ui_in = duty and uio_in = mode."""
@@ -53,3 +57,13 @@ async def test_duty_255(dut):
     await start(dut, duty=255)
     n = await on_cycles(dut, PERIOD)
     assert n == 255 * DIV, f"with duty 255 the LED was on for {n} of {PERIOD} cycles, expected {255 * DIV}"
+
+
+@cocotb.test()
+async def test_segments_show_the_top_digit(dut):
+    await start(dut)
+    for digit in range(16):
+        dut.ui_in.value = digit << 4
+        await FallingEdge(dut.clk)
+        segments = int(dut.uo_out.value) & 0x7F
+        assert segments == DIGITS[digit], f"digit {digit:X}: segments {segments:07b}, expected {DIGITS[digit]:07b}"
