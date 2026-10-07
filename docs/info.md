@@ -13,6 +13,9 @@ The design is an LED dimmer. A prescaler divides the clock by four, and an 8-bit
 turns the LED on `uo_out[7]` on for `ui_in` of every 256 steps, so `ui_in` sets the
 brightness from 0 (off) to 255.
 
+The top hex digit of the brightness is shown on a seven-segment display on
+`uo_out[6:0]` (segments a to g).
+
 ## How to test
 
 Set `ui_in` and watch the LED.
