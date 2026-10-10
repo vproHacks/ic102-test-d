@@ -27,5 +27,7 @@ module fade (
         if (level == 8'h00) rising <= 1'b1;
         else level <= level - 8'd1;
       end
+    end
+  end
 
 endmodule
