@@ -67,3 +67,11 @@ async def test_segments_show_the_top_digit(dut):
         await FallingEdge(dut.clk)
         segments = int(dut.uo_out.value) & 0x7F
         assert segments == DIGITS[digit], f"digit {digit:X}: segments {segments:07b}, expected {DIGITS[digit]:07b}"
+
+
+@cocotb.test()
+async def test_fade_rises(dut):
+    await start(dut, duty=0, mode=0b001)
+    await ClockCycles(dut.clk, 72 * DIV, rising=False)
+    segments = int(dut.uo_out.value) & 0x7F
+    assert segments == DIGITS[4], f"after 72 steps of fade mode the display shows {segments:07b}, expected {DIGITS[4]:07b} (4)"
