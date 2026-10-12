@@ -16,6 +16,9 @@ brightness from 0 (off) to 255.
 The top hex digit of the brightness is shown on a seven-segment display on
 `uo_out[6:0]` (segments a to g).
 
+With `uio_in[0]` high the LED fades up and down by itself, one count per step, and
+`ui_in` is ignored.
+
 ## How to test
 
 Set `ui_in` and watch the LED.
