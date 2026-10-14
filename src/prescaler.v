@@ -5,22 +5,24 @@
 
 `default_nettype none
 
-// Divides the clock by 4: tick is high for one clock cycle in every four.
-module prescaler (
+// Divides the clock: tick is high for one clock cycle in every DIV.
+module prescaler #(
+    parameter DIV = 4
+) (
     input  wire clk,
     input  wire rst_n,
     output wire tick
 );
 
-  reg [1:0] n;
+  reg [7:0] n;
 
   always @(posedge clk) begin
-    if (!rst_n)
-      n <= 2'd0;
+    if (!rst_n || tick)
+      n <= 8'd0;
     else
-      n <= n + 2'd1;
+      n <= n + 8'd1;
   end
 
-  assign tick = (n == 2'd3);
+  assign tick = (n == DIV - 1);
 
 endmodule

@@ -26,7 +26,7 @@ module tt_um_ic102_dimmer (
   wire [7:0] level;
   wire [7:0] duty = uio_in[0] ? level : ui_in;
 
-  prescaler u_prescaler (.clk(clk), .rst_n(rst_n), .tick(tick));
+  prescaler #(.DIV(4)) u_prescaler (.clk(clk), .rst_n(rst_n), .tick(tick));
   pwm       u_pwm       (.clk(clk), .rst_n(rst_n), .step(tick), .duty(duty), .out(led));
   fade      u_fade      (.clk(clk), .rst_n(rst_n), .step(tick), .level(level));
   seg7      u_seg7      (.digit(duty[7:4]), .segments(segments));
