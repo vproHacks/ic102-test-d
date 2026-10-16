@@ -21,6 +21,7 @@ project:
     - "prescaler.v"
     - "pwm.v"
     - "seg7.v"
+    - "seg7_table.v"
     - "fade.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
