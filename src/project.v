@@ -19,12 +19,21 @@ module tt_um_ic102_dimmer (
   // ui_in is the brightness, 0 (off) to 255, and uo_out[7] drives the LED.
   // uo_out[6:0] show the brightness's top hex digit on a seven-segment display.
   // With uio_in[0] high, the LED fades up and down by itself and ui_in is ignored.
+  // uio_in[2:1] pick a preset brightness: 1 is 16, 2 is 64, 3 is 255; 0 means none.
 
   wire       tick;
   wire       led;
   wire [6:0] segments;
   wire [7:0] level;
-  wire [7:0] duty = uio_in[0] ? level : ui_in;
+  reg  [7:0] duty;
+
+  always @(*) begin
+    case (uio_in[2:1])
+      2'd1: duty = 8'd16;
+      2'd2: duty = 8'd64;
+      2'd3: duty = 8'd255
+    endcase
+  end
 
   prescaler #(.DIV(4)) u_prescaler (.clk(clk), .rst_n(rst_n), .tick(tick));
   pwm       u_pwm       (.clk(clk), .rst_n(rst_n), .step(tick), .duty(duty), .out(led));
@@ -36,6 +45,6 @@ module tt_um_ic102_dimmer (
   assign uio_oe  = 8'd0;
 
   // List all unused inputs to prevent warnings
-  wire _unused = &{ena, uio_in[7:1], 1'b0};
+  wire _unused = &{ena, uio_in[7:3], 1'b0};
 
 endmodule
