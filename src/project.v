@@ -21,7 +21,7 @@ module tt_um_ic102_dimmer (
   // With uio_in[0] high, the LED fades up and down by itself and ui_in is ignored.
   // uio_in[2:1] pick a preset brightness: 1 is 16, 2 is 64, 3 is 255; 0 means none.
 
-  wire       tick;
+  wire       step;
   wire       led;
   wire [6:0] segments;
   wire [7:0] level;
@@ -36,9 +36,9 @@ module tt_um_ic102_dimmer (
     endcase
   end
 
-  prescaler #(.DIV(4)) u_prescaler (.clk(clk), .rst_n(rst_n), .tick(tick));
-  pwm       u_pwm       (.clk(clk), .rst_n(rst_n), .step(tick), .duty(duty), .out(led));
-  fade      u_fade      (.clk(clk), .rst_n(rst_n), .step(tick), .level(level));
+  prescaler #(.DIV(4)) u_prescaler (.clk(clk), .rst_n(rst_n), .tick(step));
+  pwm       u_pwm       (.clk(clk), .rst_n(rst_n), .step(step), .duty(duty), .out(led));
+  fade      u_fade      (.clk(clk), .rst_n(rst_n), .step(step), .level(level));
   seg7      u_seg7      (.digit(duty[7:4]), .segments(segments));
 
   assign uo_out  = {led, segments};
