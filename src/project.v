@@ -31,7 +31,8 @@ module tt_um_ic102_dimmer (
     case (uio_in[2:1])
       2'd1: duty = 8'd16;
       2'd2: duty = 8'd64;
-      2'd3: duty = 8'd255
+      2'd3: duty = 8'd255;
+      default: duty = uio_in[0] ? level : ui_in;
     endcase
   end
 
