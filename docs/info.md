@@ -19,6 +19,14 @@ The top hex digit of the brightness is shown on a seven-segment display on
 With `uio_in[0]` high the LED fades up and down by itself, one count per step, and
 `ui_in` is ignored.
 
+| Pin | Use |
+|---|---|
+| `ui_in[7:0]` | Brightness |
+| `uo_out[7]` | LED |
+| `uo_out[6:0]` | Seven-segment display |
+| `uio_in[0]` | Fade mode |
+| `uio_in[2:1]` | Preset brightness |
+
 ## How to test
 
 Set `ui_in` and watch the LED.
