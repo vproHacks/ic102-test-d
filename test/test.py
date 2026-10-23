@@ -14,8 +14,8 @@ DIGITS = [0b0111111, 0b0000110, 0b1011011, 0b1001111, 0b1100110, 0b1101101, 0b11
 
 
 async def start(dut, duty=0, mode=0):
-    """Start a 100 kHz clock and reset the design, with ui_in = duty and uio_in = mode."""
-    cocotb.start_soon(Clock(dut.clk, 10, unit="us").start())
+    """Start a 10 MHz clock and reset the design, with ui_in = duty and uio_in = mode."""
+    cocotb.start_soon(Clock(dut.clk, 100, unit="ns").start())
     dut.ena.value = 1
     dut.ui_in.value = duty
     dut.uio_in.value = mode
