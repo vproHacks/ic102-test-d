@@ -29,7 +29,8 @@ With `uio_in[0]` high the LED fades up and down by itself, one count per step, a
 
 ## How to test
 
-Set `ui_in` and watch the LED.
+Connect an LED to `uo_out[7]` and set `ui_in` to the brightness you want; the
+display shows its top hex digit. Set `uio_in[0]` to watch the LED fade.
 
 ## External hardware
 
