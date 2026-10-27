@@ -85,3 +85,9 @@ async def test_presets(dut):
         await FallingEdge(dut.clk)
         segments = int(dut.uo_out.value) & 0x7F
         assert segments == DIGITS[duty >> 4], f"preset {preset}: segments {segments:07b}, expected {DIGITS[duty >> 4]:07b}"
+
+
+@cocotb.test()
+async def test_uio_pins_are_inputs(dut):
+    await start(dut)
+    assert dut.uio_oe.value == 0, f"uio_oe is {dut.uio_oe.value}, expected all inputs (0)"
