@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-// The seven-segment table, active high: segments[6:0] = {g, f, e, d, c, b, a}.
+// Seven-segment patterns, active high: segments[6:0] = {g, f, e, d, c, b, a}.
 module seg7_table (
     input  wire [3:0] digit,
     output reg  [6:0] segments
