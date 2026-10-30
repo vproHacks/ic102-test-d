@@ -34,4 +34,4 @@ display shows its top hex digit. Set `uio_in[0]` to watch the LED fade.
 
 ## External hardware
 
-List external hardware used in your project (e.g. PMOD, LED display, etc), if any
+An LED with a resistor on `uo_out[7]`, and a common-cathode seven-segment display on `uo_out[6:0]`.
