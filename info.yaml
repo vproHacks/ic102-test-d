@@ -3,7 +3,7 @@ project:
   title:        "PWM dimmer"      # Project title
   author:       "Avery Lee, Jordan Park, Sam Rivera"      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  "A PWM LED dimmer"      # One line description of what your project does
+  description:  "A PWM LED dimmer with a seven-segment display and a fade mode"      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
   clock_hz:     10000000       # Clock frequency in Hz (or 0 if not applicable)
 
