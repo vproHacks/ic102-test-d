@@ -42,21 +42,21 @@ async def on_cycles(dut, cycles):
 async def test_duty_0_is_off(dut):
     await start(dut, duty=0)
     n = await on_cycles(dut, 2 * PERIOD)
-    assert n == 0, f"with duty 0 the LED was on for {n} of {2 * PERIOD} cycles, expected 0"
+    assert n == 0, f"with duty 0 the LED (uo_out[7]) was on for {n} of {2 * PERIOD} cycles, expected 0"
 
 
 @cocotb.test()
 async def test_duty_64_is_a_quarter(dut):
     await start(dut, duty=64)
     n = await on_cycles(dut, PERIOD)
-    assert n == 64 * DIV, f"with duty 64 the LED was on for {n} of {PERIOD} cycles, expected {64 * DIV}"
+    assert n == 64 * DIV, f"with duty 64 the LED (uo_out[7]) was on for {n} of {PERIOD} cycles, expected {64 * DIV}"
 
 
 @cocotb.test()
 async def test_duty_255(dut):
     await start(dut, duty=255)
     n = await on_cycles(dut, PERIOD)
-    assert n == 255 * DIV, f"with duty 255 the LED was on for {n} of {PERIOD} cycles, expected {255 * DIV}"
+    assert n == 255 * DIV, f"with duty 255 the LED (uo_out[7]) was on for {n} of {PERIOD} cycles, expected {255 * DIV}"
 
 
 @cocotb.test()
