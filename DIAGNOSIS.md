@@ -15,11 +15,11 @@ timestamp; don't paraphrase it.
 
 ## Breakage 2
 
-- Prediction:
-- Job that failed first:
-- Step:
-- First error line:
-- Fix:
+- Prediction: only docs goes red, because only the docs check reads docs/info.md.
+- Job that failed first: docs
+- Step: Build docs, section "Check info.yaml and docs/info.md"
+- First error line: - Missing 'How it works' section in docs/info.md
+- Fix: Put back the two sections I wrote in Lab 01 (docs/info.md from the commit before the breakage).
 - Fix commit:
 
 ## Breakage 3

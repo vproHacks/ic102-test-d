@@ -9,11 +9,13 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Explain how your project works
+The design adds two 8-bit numbers. The first, a, comes in on ui_in and the second, b, on uio_in, which
+the design leaves as inputs. The sum goes out on uo_out, without the carry, so it wraps around at 256.
 
 ## How to test
 
-Explain how to use your project
+Set a on ui_in and b on uio_in, and read the sum on uo_out. For example, a = 20 and b = 30 give 50.
+The clock and reset aren't used.
 
 ## External hardware
 
