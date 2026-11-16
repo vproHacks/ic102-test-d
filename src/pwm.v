@@ -5,8 +5,8 @@
 
 `default_nettype none
 
-// An 8-bit PWM. Each step moves the phase on by one, so a period is 256 steps long, and out is
-// on for duty steps of each period.
+// An 8-bit PWM. Each step advances the phase by one, so a period is 256 steps, and out is high
+// for the first duty steps of each period: duty 0 is always off, and 255 is on for 255 of 256.
 module pwm (
     input  wire       clk,
     input  wire       rst_n,
@@ -24,7 +24,7 @@ module pwm (
       phase <= phase + 8'd1;
   end
 
-  // On for duty steps of each period.
-  assign out = (phase <= duty);
+  // High while the phase is below the duty.
+  assign out = (phase < duty);
 
 endmodule
