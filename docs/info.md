@@ -9,13 +9,14 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-The design adds two 8-bit numbers. The first, a, comes in on ui_in and the second, b, on uio_in, which
-the design leaves as inputs. The sum goes out on uo_out, without the carry, so it wraps around at 256.
+An 8-bit counter. While EN (ui_in[0]) is high it counts by one on each rising clock edge, up, or
+down when DOWN (ui_in[2]) is high. LOAD (ui_in[1]) loads the value on uio_in at the next rising
+edge, and wins over EN. rst_n low resets the count to 0. The count is on uo_out.
 
 ## How to test
 
-Set a on ui_in and b on uio_in, and read the sum on uo_out. For example, a = 20 and b = 30 give 50.
-The clock and reset aren't used.
+Reset, then hold EN high and watch uo_out count up once per clock. Put a value on uio_in and raise
+LOAD for one clock to load it. Raise DOWN to count down.
 
 ## External hardware
 

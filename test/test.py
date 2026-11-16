@@ -1,47 +1,54 @@
-# SPDX-FileCopyrightText: © 2024 Tiny Tapeout
+# SPDX-FileCopyrightText: 2026 UofT ASIC Team
 # SPDX-License-Identifier: Apache-2.0
+#
+# The cocotb test for IC102-D's Lab 03 counter. Copy it over your repository's test/test.py.
+#
+# It drives and reads only the pins (ui_in, uio_in, uo_out, clk, rst_n), never a signal inside
+# the design, because the gl_test job runs this same file on the gate-level netlist, where the
+# design's internal names are gone. For the same reason it changes inputs and reads outputs on
+# the falling edge of the clock, half a period away from the rising edge where the counter
+# changes.
 
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import ClockCycles
+from cocotb.triggers import ClockCycles, FallingEdge
+
+# The bits of ui_in, as in the comment at the top of counter.v.
+EN = 0b001
+LOAD = 0b010
+DOWN = 0b100
 
 
-@cocotb.test()
-async def test_project(dut):
-    dut._log.info("Start")
-
-    # Set the clock period to 10 us (100 KHz)
-    clock = Clock(dut.clk, 10, unit="us")
-    cocotb.start_soon(clock.start())
-
-    # Reset
-    dut._log.info("Reset")
+async def start(dut):
+    """Start a 10 MHz clock, hold reset for five cycles, and return on a falling edge."""
+    cocotb.start_soon(Clock(dut.clk, 100, unit="ns").start())
     dut.ena.value = 1
     dut.ui_in.value = 0
     dut.uio_in.value = 0
     dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
+    await ClockCycles(dut.clk, 5)
     dut.rst_n.value = 1
+    await FallingEdge(dut.clk)
 
-    dut._log.info("Test project behavior")
 
-    # Set the input values you want to test
-    dut.ui_in.value = 20
-    dut.uio_in.value = 30
+async def cycles(dut, n):
+    """Let n rising edges go by, and return on the falling edge after the last one."""
+    for _ in range(n):
+        await FallingEdge(dut.clk)
 
-    # Wait for one clock cycle to see the output values
-    await ClockCycles(dut.clk, 1)
 
-    # The following assersion is just an example of how to check the output values.
-    # Change it to match the actual expected output of your module:
-    # uo_out is ui_in - uio_in now: 20 - 30 = -10, which is 246 in eight bits.
-    assert dut.uo_out.value == 246
+@cocotb.test()
+async def test_reset(dut):
+    await start(dut)
+    assert dut.uo_out.value == 0, f"after reset uo_out is {dut.uo_out.value}, expected 0"
 
-    # And the other way round, so that swapped operands can't pass.
-    dut.ui_in.value = 30
-    dut.uio_in.value = 20
-    await ClockCycles(dut.clk, 1)
-    assert dut.uo_out.value == 10
 
-    # Keep testing the module by changing the input values, waiting for
-    # one or more clock cycles, and asserting the expected output values.
+@cocotb.test()
+async def test_count_up(dut):
+    await start(dut)
+    dut.ui_in.value = EN
+    await cycles(dut, 10)
+    assert dut.uo_out.value == 10, f"after 10 cycles with EN high uo_out is {dut.uo_out.value}, expected 10"
+
+
+# Part 2: add a test of LOAD here.
