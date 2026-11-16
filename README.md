@@ -40,3 +40,12 @@ The GitHub action will automatically build the ASIC files using [LibreLane](http
   - Mastodon [#tinytapeout](https://chaos.social/tags/tinytapeout) [@matthewvenn](https://chaos.social/@matthewvenn)
   - X (formerly Twitter) [#tinytapeout](https://twitter.com/hashtag/tinytapeout) [@tinytapeout](https://twitter.com/tinytapeout)
   - Bluesky [@tinytapeout.com](https://bsky.app/profile/tinytapeout.com)
+
+## Numbers
+
+From the `gds` run [43839710228](https://github.com/vproHacks/ic102-test-d/actions/runs/43839710228) (commit f53e563):
+
+| Number | Value | Where it comes from |
+|---|---|---|
+| Utilisation | 5.293 % | `runs/wokwi/*-openroad-globalplacement/openroad-globalplacement.log`, line `[INFO GPL-0019]` |
+| Wire length | 1807 um | `runs/wokwi/final/metrics.csv`, row `route__wirelength` |
