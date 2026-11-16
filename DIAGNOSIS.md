@@ -11,7 +11,7 @@ timestamp; don't paraphrase it.
 - Step: Build docs, section "Check info.yaml and docs/info.md"
 - First error line: - Project title cannot be empty
 - Fix: Put the project title back in info.yaml.
-- Fix commit:
+- Fix commit: bf7a3fc
 
 ## Breakage 2
 
