@@ -1,6 +1,6 @@
 # Tiny Tapeout project information
 project:
-  title:        ""      # Project title
+  title:        "IC102 practice adder"      # Project title
   author:       "IC102 test student"      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
   description:  "Adds ui_in and uio_in and puts the 8-bit sum on uo_out"      # One line description of what your project does

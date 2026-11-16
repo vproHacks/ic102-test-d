@@ -6,11 +6,11 @@ timestamp; don't paraphrase it.
 
 ## Breakage 1
 
-- Prediction:
-- Job that failed first:
-- Step:
-- First error line:
-- Fix:
+- Prediction: docs and gds go red, test stays green; docs finishes red first.
+- Job that failed first: docs
+- Step: Build docs, section "Check info.yaml and docs/info.md"
+- First error line: - Project title cannot be empty
+- Fix: Put the project title back in info.yaml.
 - Fix commit:
 
 ## Breakage 2
