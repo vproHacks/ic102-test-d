@@ -36,7 +36,7 @@ module tt_um_vprohacks_counter (
     if (!rst_n)
       count <= 8'd0;
     else if (load)
-      count <= ui_in;
+      count <= uio_in;
     else if (en)
       count <= down ? count - 8'd1 : count + 8'd1;
   end
