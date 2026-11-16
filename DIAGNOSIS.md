@@ -42,14 +42,14 @@ timestamp; don't paraphrase it.
 
 ## Breakage 5
 
-- Prediction:
-- Job that failed first:
-- Step:
-- First error line:
-- Fix:
+- Prediction: docs and gds go red as in breakage 1, because 50MHz isn't a number.
+- Job that failed first: docs (gds finished red in the same second)
+- Step: Build docs, section "Check info.yaml and docs/info.md"
+- First error line: - Invalid value for 'clock_hz' in 'project' section, must be an integer
+- Fix: clock_hz: 50000000, a whole number of hertz.
 - Fix commit:
 
 ## A value no workflow catches
 
-- Value:
-- Why every workflow passes with it:
+- Value: clock_hz: 50
+- Why every workflow passes with it: 50 is an integer, so the validator accepts it, and nothing checks it against the clock the design was meant to run at; it says 50 Hz where the commit meant 50 MHz.
