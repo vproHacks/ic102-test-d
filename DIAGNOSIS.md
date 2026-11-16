@@ -47,7 +47,7 @@ timestamp; don't paraphrase it.
 - Step: Build docs, section "Check info.yaml and docs/info.md"
 - First error line: - Invalid value for 'clock_hz' in 'project' section, must be an integer
 - Fix: clock_hz: 50000000, a whole number of hertz.
-- Fix commit:
+- Fix commit: e9f320e
 
 ## A value no workflow catches
 
