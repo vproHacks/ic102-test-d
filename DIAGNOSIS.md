@@ -38,7 +38,7 @@ timestamp; don't paraphrase it.
 - Step: Run tests
 - First error line: AssertionError: assert LogicArray('11110110', Range(7, 'downto', 0)) == 50
 - Fix: The design is meant to subtract now, so the test expects 246 for 20 - 30, and checks 30 - 20 = 10 as well.
-- Fix commit:
+- Fix commit: 9126c83
 
 ## Breakage 5
 
