@@ -29,7 +29,7 @@ timestamp; don't paraphrase it.
 - Step: Run tests
 - First error line: /home/runner/work/ic102-test-d/ic102-test-d/test/tb.v:31: error: Unknown module type: tt_um_example
 - Fix: Name the new module on line 31 of test/tb.v (keep the rename, which the template asks for).
-- Fix commit:
+- Fix commit: c81b926
 
 ## Breakage 4
 
